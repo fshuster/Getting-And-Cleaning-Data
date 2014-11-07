@@ -45,4 +45,37 @@ FGDPClean$GDP <- as.numeric(gsub(",","",FGDPClean$GDP))
 
 GDPmean <- mean(FGDPClean$GDP)
 
+# Question 3
+
+grep("^United",FGDP$X.2)
+
+# Answer = 3
+
+# Question 4
+
+if(!file.exists("./data")){dir.create("./data")}
+fileURL <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv"
+download.file(fileURL, destfile = "./data/fedstats.csv")
+file = "./data/fedstats.csv"
+fedstats <-  read.csv(file, header = TRUE, stringsAsFactors = FALSE)
+
+# Merge data
+
+FGDPClean$CountryCode <- as.character(FGDPClean$CountryCode)
+FGDPfeststatsmerge <- merge(FGDPClean, fedstats, by = "CountryCode")
+
+length(grep("[Ff]iscal [Yy]ear [Ee]nd: [Jj]une",FGDPfeststatsmerge$Special.Notes))
+
+# Answer = 13
+
+# Question 5
+
+library(quantmod)
+amzn <- getSymbols("AMZN",auto.assign=FALSE)
+sampleTimes <- index(amzn) 
+
+sampleTimesNew <- format(sampleTimes,"%A %B %d %Y")
+
+length(grep("2012$",sampleTimesNew))
+length(grep("^Monday.*2012$",sampleTimesNew))
 
